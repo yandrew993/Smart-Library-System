@@ -1,0 +1,184 @@
+.returnBook {
+    display: flex;
+    height: 100vh;
+  
+    // Sidebar styles
+    .sidebar {
+        width: 250px;
+        color: #ffffff;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+    
+        &.dark {
+          background-color: #374151;
+          color: #f9fafb;
+        }
+      }
+  
+    .returnBookContainer {
+      flex: 1;
+      margin-left: 200px; /* Adjust for sidebar width */
+      display: flex;
+      flex-direction: column;
+  
+      // Navbar styles
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 250px; /* Adjust based on sidebar width */
+        width: calc(100% - 250px); /* Adjust based on sidebar width */
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+       // padding: 5px;
+        z-index: 10;
+  
+        &.dark {
+          background-color: #374151;
+          color: #f9fafb;
+        }
+      }
+  
+      .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 80px; /* Adjust based on navbar height */
+        padding: 20px;
+        background-color: #f9f9f9;
+  
+        h2 {
+          font-size: 26px;
+          margin-bottom: 25px;
+          color: #2d3748;
+          text-align: center;
+        }
+  
+        .custom-select {
+          position: relative;
+          width: 100%;
+          max-width: 500px;
+          margin-bottom: 5px;
+          padding: 5px 50px;
+  
+          .select-header {
+            padding: 5px 50px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+  
+            &:hover {
+              border-color: #3182ce;
+            }
+          }
+  
+          .select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 20;
+            max-height: 200px;
+            overflow-y: auto;
+  
+            .search-input {
+              width: 100%;
+              padding: 10px;
+              border: none;
+              border-bottom: 1px solid #cbd5e0;
+              font-size: 16px;
+  
+              &:focus {
+                outline: none;
+                border-color: #3182ce;
+              }
+            }
+  
+            .options-list {
+              list-style: none;
+              padding: 0;
+              margin: 0;
+  
+              .option {
+                padding: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+  
+                &:hover {
+                  background-color: #edf2f7;
+                }
+              }
+  
+              .no-results {
+                padding: 10px;
+                text-align: center;
+                color: #718096;
+              }
+            }
+          }
+        }
+  
+        .bookDetails {
+          width: 100%;
+          max-width: 600px;
+          background-color: #ffffff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  
+          h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2d3748;
+          }
+  
+          p {
+            margin: 8px 0;
+            font-size: 16px;
+            color: #4a5568;
+          }
+  
+          .returnButton {
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #e53e3e;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+  
+            &:hover {
+              background-color: #c53030;
+            }
+          }
+        }
+  
+        .loading {
+          font-size: 16px;
+          color: #4a5568;
+          margin-top: 20px;
+        }
+  
+        .error {
+          color: #e53e3e;
+          font-size: 16px;
+          text-align: center;
+          margin-top: 20px;
+        }
+      }
+    }
+  }

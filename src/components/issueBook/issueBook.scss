@@ -1,0 +1,292 @@
+.issueBook {
+  display: flex;
+
+  .issueBookContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 250px; /* Adjust based on sidebar width */
+      width: calc(100% - 250px); /* Adjust based on sidebar width */
+      background-color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+     // padding: 5px;
+      z-index: 10;
+
+      &.dark {
+        background-color: #374151;
+        color: #f9fafb;
+      }
+    }
+
+    .issueBookPage {
+      margin-top: 100px; /* Adjust based on navbar height */
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .formContainer {
+        width: 100%;
+        max-width: 500px;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+        &.dark {
+          background-color: #1f2937;
+          color: #f9fafb;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 24px;
+          color: inherit;
+        }
+
+        form {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+
+          .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+
+            label {
+              font-size: 14px;
+              font-weight: 500;
+              margin-bottom: 5px;
+              color: inherit;
+            }
+
+            select,
+            input {
+              padding: 10px;
+              border: 1px solid #e5e7eb;
+              border-radius: 4px;
+              font-size: 14px;
+              background-color: #f9fafb;
+              color: #111827;
+
+              &:focus {
+                border-color: #2563eb;
+                outline: none;
+              }
+
+              &:disabled {
+                background-color: #e5e7eb;
+                cursor: not-allowed;
+              }
+            }
+
+            &.dark select,
+            &.dark input {
+              background-color: #374151;
+              color: #f9fafb;
+              border: 1px solid #4b5563;
+
+              &:focus {
+                border-color: #4f46e5;
+              }
+
+              &:disabled {
+                background-color: #4b5563;
+              }
+            }
+          }
+
+          .custom-select {
+            position: relative;
+
+            .select-header {
+              padding: 10px;
+              border: 1px solid #e5e7eb;
+              border-radius: 4px;
+              font-size: 14px;
+              cursor: pointer;
+              background-color: #f9fafb;
+              color: #111827;
+
+              &:hover {
+                border-color: #2563eb;
+              }
+
+              &.dark {
+                background-color: #374151;
+                color: #f9fafb;
+                border: 1px solid #4b5563;
+
+                &:hover {
+                  border-color: #4f46e5;
+                }
+              }
+            }
+
+            .select-dropdown {
+              position: absolute;
+              top: 100%;
+              left: 0;
+              width: 100%;
+              max-height: 200px;
+              overflow-y: auto;
+              border: 1px solid #e5e7eb;
+              border-radius: 4px;
+              background-color: #ffffff;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+              z-index: 10;
+
+              &.dark {
+                background-color: #374151;
+                border: 1px solid #4b5563;
+              }
+
+              .search-input {
+                padding: 10px;
+                border: none;
+                border-bottom: 1px solid #e5e7eb;
+                font-size: 14px;
+                background-color: #f9fafb;
+                color: #111827;
+
+                &:focus {
+                  outline: none;
+                  border-bottom-color: #2563eb;
+                }
+
+                &.dark {
+                  background-color: #4b5563;
+                  color: #f9fafb;
+                  border-bottom: 1px solid #4f46e5;
+                }
+              }
+
+              .options-list {
+                .option {
+                  padding: 10px;
+                  cursor: pointer;
+                  font-size: 14px;
+                  color: #111827;
+
+                  &:hover {
+                    background-color: #f3f4f6;
+                  }
+
+                  &.dark {
+                    color: #f9fafb;
+
+                    &:hover {
+                      background-color: #4b5563;
+                    }
+                  }
+                }
+
+                .no-results {
+                  padding: 10px;
+                  text-align: center;
+                  color: #9ca3af;
+                  font-size: 14px;
+
+                  &.dark {
+                    color: #6b7280;
+                  }
+                }
+              }
+            }
+          }
+
+          .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            button {
+              padding: 10px 20px;
+              border-radius: 4px;
+              font-size: 14px;
+              cursor: pointer;
+              background-color: #2563eb;
+              color: #ffffff;
+              border: none;
+
+              &:hover {
+                background-color: #1d4ed8;
+              }
+
+              &:disabled {
+                background-color: #9ca3af;
+                cursor: not-allowed;
+              }
+
+              &.dark {
+                background-color: #4f46e5;
+
+                &:hover {
+                  background-color: #4338ca;
+                }
+
+                &:disabled {
+                  background-color: #6b7280;
+                }
+              }
+            }
+          }
+
+          .errorMessage {
+            color: #dc2626;
+            font-size: 14px;
+            text-align: center;
+          }
+
+          .successMessage {
+            color: #16a34a;
+            font-size: 14px;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  .sidebar {
+    width: 250px;
+    background-color: #f9fafb;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+
+    &.dark {
+      background-color: #1f2937;
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .issueBookContainer {
+    .navbar {
+      left: 0;
+      width: 100%;
+    }
+
+    .issueBookPage {
+      margin-top: 70px; /* Adjust for navbar height */
+      padding: 15px;
+    }
+
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+  }
+}
