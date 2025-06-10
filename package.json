@@ -34,12 +34,12 @@
     "web-vitals": "^2.1.4",
     "zustand": "^5.0.3"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+ "scripts": {
+  "start": "set PORT=5173 && react-scripts start",
+  "build": "react-scripts build",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject"
+},
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -58,7 +58,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://e-housing-e4yj.onrender.com/api",
+ "proxy": "http://localhost:3000",
   "devDependencies": {
     "react-scripts": "^5.0.1",
     "webpack": "^5.98.0"

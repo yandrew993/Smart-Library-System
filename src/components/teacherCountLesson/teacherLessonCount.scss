@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+$primary-color: #4361ee;
+$secondary-color: #3f37c9;
+$light-color: #f8f9fa;
+$dark-color: #212529;
+$success-color: #4cc9f0;
+$warning-color: #f8961e;
+$danger-color: #f72585;
+
+.teacher-lesson-container {
+  font-family: 'Poppins', sans-serif;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  
+  .section-title {
+    color: $primary-color;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  
+  .section-subtitle {
+    color: lighten($dark-color, 30%);
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .lesson-count-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    
+    thead {
+      background: linear-gradient(135deg, $primary-color, $secondary-color);
+      color: white;
+      
+      th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        
+        &:first-child {
+          border-top-left-radius: 10px;
+        }
+        
+        &:last-child {
+          border-top-right-radius: 10px;
+        }
+      }
+    }
+    
+    tbody {
+      tr {
+        transition: all 0.2s ease;
+        
+        &:nth-child(even) {
+          background: rgba($primary-color, 0.03);
+        }
+        
+        &:hover {
+          background: rgba($primary-color, 0.1);
+          transform: translateY(-2px);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        td {
+          padding: 1rem;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          
+          &.rank-cell {
+            font-weight: 600;
+            color: $primary-color;
+            text-align: center;
+          }
+          
+          &.teacher-cell {
+            .teacher-name {
+              display: block;
+              font-weight: 500;
+            }
+            
+            .teacher-id {
+              font-size: 0.8rem;
+              color: lighten($dark-color, 40%);
+            }
+          }
+          
+          &.count-cell {
+            font-weight: 600;
+            text-align: center;
+          }
+          
+          &.status-cell {
+            .status-badge {
+              display: inline-block;
+              padding: 0.3rem 0.8rem;
+              border-radius: 20px;
+              font-size: 0.8rem;
+              font-weight: 500;
+              
+              &.high {
+                background: rgba($danger-color, 0.1);
+                color: $danger-color;
+              }
+              
+              &.medium {
+                background: rgba($warning-color, 0.1);
+                color: $warning-color;
+              }
+              
+              &.low {
+                background: rgba($success-color, 0.1);
+                color: $success-color;
+              }
+            }
+          }
+        }
+        
+        &:last-child {
+          td {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+  }
+  
+  .stats-summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    
+    .stat-card {
+      flex: 1;
+      padding: 1.5rem;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      transition: transform 0.3s ease;
+      
+      &:hover {
+        transform: translateY(-5px);
+      }
+      
+      h3 {
+        color: lighten($dark-color, 30%);
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+      
+      p {
+        font-size: 2rem;
+        font-weight: 600;
+        color: $primary-color;
+        margin: 0;
+      }
+      
+      &.total {
+        border-top: 4px solid $primary-color;
+      }
+      
+      &.average {
+        border-top: 4px solid $warning-color;
+        
+        p {
+          color: $warning-color;
+        }
+      }
+      
+      &.max {
+        border-top: 4px solid $danger-color;
+        
+        p {
+          color: $danger-color;
+        }
+      }
+    }
+  }
+  
+  .loading-spinner {
+    border: 4px solid rgba($primary-color, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid $primary-color;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 2rem auto;
+  }
+  
+  .error-message {
+    color: $danger-color;
+    text-align: center;
+    padding: 2rem;
+    font-weight: 500;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

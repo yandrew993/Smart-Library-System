@@ -12,7 +12,7 @@ import { CircularProgress } from "@mui/material";
 
 const Profile = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const id = user?.id;
+  const teacherId = user?.teacherId;
 
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -28,8 +28,9 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await apiRequest.get(`/users/${id}`);
+        const res = await apiRequest.get(`/teacher/${teacherId}`);
         setUserData(res.data);
+        console.log("User data fetched:", res.data);
       } catch (err) {
         console.error("Failed to fetch user:", err);
         setError(err);
@@ -38,13 +39,13 @@ const Profile = () => {
       }
     };
 
-    if (id) {
+    if (teacherId) {
       fetchUser();
     } else {
       console.error("No user ID found in localStorage");
       setLoading(false);
     }
-  }, [id]);
+  }, [teacherId]);
 
   // Fetch posts created by the logged-in admin
   useEffect(() => {
@@ -53,7 +54,7 @@ const Profile = () => {
         const res = await apiRequest.get(`/posts`);
 
         if (Array.isArray(res.data)) {
-          const adminPosts = res.data.filter((post) => post.userId === id);
+          const adminPosts = res.data.filter((post) => post.userId === teacherId);
           setPosts(adminPosts);
         } else {
           console.error("Unexpected response format:", res.data);
@@ -66,10 +67,10 @@ const Profile = () => {
       }
     };
 
-    if (id) {
+    if (teacherId) {
       fetchPosts();
     }
-  }, [id]);
+  }, [teacherId]);
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -89,7 +90,7 @@ const Profile = () => {
       };
       const token = Cookies.get("token");
 
-      await apiRequest.put(`/users/${id}`, userReq, {
+      await apiRequest.put(`/users/${teacherId}`, userReq, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

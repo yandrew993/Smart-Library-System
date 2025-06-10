@@ -9,40 +9,40 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { useNotificationStore } from "../../lib/notificationStore";
+// import { useNotificationStore } from "../../lib/notificationStore";
 import Chat from "../chat/Chat.jsx";
 
 const Navbar = ({ setSearchQueryProp }) => {
   const { dispatch } = useContext(DarkModeContext);
   const [searchQuery, setSearchQuery] = useState("");
   const { user } = useContext(AuthContext);
-  const fetch = useNotificationStore((state) => state.fetch);
-  const number = useNotificationStore((state) => state.number);
+  // const fetch = useNotificationStore((state) => state.fetch);
+  // const number = useNotificationStore((state) => state.number);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  
-    if (user) fetch();
 
-    // console.log(user);
+  // if (user) fetch();
+
+  // console.log(user);
 
   useEffect(() => {
-    if(setSearchQueryProp) {
+    if (setSearchQueryProp) {
       setSearchQueryProp(searchQuery);
     }
   }, [searchQuery, setSearchQueryProp]);
 
   const handleOpenChat = async () => {
     setIsChatOpen(true);
-  }
+  };
 
   const handleCloseChat = () => {
     setIsChatOpen(false);
-  }
+  };
 
   return (
     <>
-    <div className="navbar">
-      <div className="wrapper">
-        <div className="search">
+      <div className="navbar">
+        <div className="wrapper">
+          <div className="search">
             <input
               type="text"
               placeholder="Search..."
@@ -52,44 +52,30 @@ const Navbar = ({ setSearchQueryProp }) => {
             <button type="submit" className="searchButton">
               <SearchOutlinedIcon />
             </button>
-        </div>
-        <div className="items">
-          {/* <div className="item">
-            <LanguageOutlinedIcon className="icon" />
-            English
-          </div> */}
-          <div className="item">
-            <DarkModeOutlinedIcon
-              className="icon"
-              onClick={() => dispatch({ type: "TOGGLE" })}
-            />
           </div>
-          <div className="item">
-            {/* <FullscreenExitOutlinedIcon className="icon" /> */}
-          </div>
-          {/* <div className="item">
-            <NotificationsNoneOutlinedIcon className="icon" />
-            { number > 0 && <div className="counter">{number}</div> }
-          </div> */}
-          <div className="item" onClick={handleOpenChat}>
-            <ChatBubbleOutlineOutlinedIcon className="icon" />
-            { number > 0 && <div className="counter">{number}</div> }
-          </div>
-          <div className="item">
-            {/* <ListOutlinedIcon className="icon" /> */}
-          </div>
-          <div className="item">
-            <img
-              src={user?.avatar || "/noavatar.jpg"}
-              alt=""
-              className="avatar"
-            />
+          <div className="items">
+            <div className="item">
+              <DarkModeOutlinedIcon
+                className="icon"
+                onClick={() => dispatch({ type: "TOGGLE" })}
+              />
+            </div>
+            <div className="item" onClick={handleOpenChat}>
+              <ChatBubbleOutlineOutlinedIcon className="icon" />
+              {/* { number > 0 && <div className="counter">{number}</div> } */}
+            </div>
+            <div className="item">
+              <img
+                src={user?.avatar || "/noavatar.jpg"}
+                alt=""
+                className="avatar"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-        {isChatOpen && <Chat handleCloseChat={handleCloseChat} />}
-        </>
+      {isChatOpen && <Chat handleCloseChat={handleCloseChat} />}
+    </>
   );
 };
 

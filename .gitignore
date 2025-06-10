@@ -1,12 +1,23 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
 
-# testing
-/coverage
+# Node modules
+node_modules/
+
+# Optional: Other common exclusions
+.DS_Store
+dist/
+build/
+*.log
+.idea/
+.vscode/
 
 # production
 /build

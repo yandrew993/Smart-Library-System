@@ -1,0 +1,125 @@
+.newBook {
+    display: flex;
+  
+    &.light {
+      background-color: #f9fafb;
+      color: #111827;
+  
+      .formContainer {
+        background-color: #ffffff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+  
+      .sendButton {
+        background-color: #2563eb;
+        color: #ffffff;
+        padding: 10px 5px;
+        border: none;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 10px;
+        cursor: pointer;
+  
+        &:disabled {
+          background-color: #9ca3af;
+        }
+      }
+  
+      .backButton {
+        background-color: #f3f4f6;
+        color: #111827;
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+    }
+  
+    &.dark {
+      background-color: #1f2937;
+      color: #f9fafb;
+  
+      .formContainer {
+        background-color: #374151;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      }
+  
+      .sendButton {
+        background-color: #4f46e5;
+        color: #ffffff;
+        padding: 10px 5px;
+        border: none;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 10px;
+        cursor: pointer;
+  
+        &:disabled {
+          background-color: #6b7280;
+        }
+      }
+  
+      .backButton {
+        background-color: #4b5563;
+        color: #f9fafb;
+        margin-bottom: 10px;
+      }
+    }
+  
+    .newBookContainer {
+      flex: 6;
+      padding: 20px;
+  
+      .newBookPage {
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+        // align-items: center;
+        height: 70vh;
+  
+        .formContainer {
+          width: 100%;
+          max-width: 500px;
+          padding: 30px;
+          border-radius: 8px;
+  
+          .wrapper {
+            form {
+              display: flex;
+              flex-direction: column;
+              gap: 15px;
+  
+              .item {
+                display: flex;
+                flex-direction: column;
+  
+                label {
+                  font-size: 14px;
+                  font-weight: 500;
+                  margin-bottom: 5px;
+                }
+  
+                input {
+                  padding: 10px;
+                  border: 1px solid #e5e7eb;
+                  border-radius: 4px;
+                  font-size: 14px;
+                }
+              }
+  
+              .error {
+                color: #dc2626;
+                font-size: 14px;
+                margin-top: 10px;
+                text-align: center;
+              }
+              .loading {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }

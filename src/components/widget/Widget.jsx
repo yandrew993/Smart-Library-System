@@ -11,24 +11,24 @@ const Widget = ({ type }) => {
   let data;
 
   const apiUrl =
-    type === "student"
-      ? "/students/total"
-      : type === "book"
-      ? "/books/total"
-      : type === "students"
-      ? "/students/withbooks"
-      : type === "available"
+    type === "teacher"
+      ? "/teachers/total"
+      : type === "subject"
+      ? "/subjects/total"
+      : type === "classes"
+      ? "/classes/total"
+      : type === "lesson"
       ? "/books/total/available"
       : null;
 
   const statsUrl =
-    type === "student"
-      ? "/students/stats"
-      : type === "book"
-      ? "/books/stats"
-      : type === "students"
-      ? "/students/withbooks"
-      : type === "available"
+    type === "teacher"
+      ? "/teachers/total"
+      : type === "subject"
+      ? "/subjects/total"
+      : type === "classes"
+      ? "/classes/total"
+      : type === "lesson"
       ? "/books/total/available"
       : null;
 
@@ -42,13 +42,13 @@ const Widget = ({ type }) => {
   const totalValue = apiData?.totalStudents || apiData?.totalBooks || apiData?.totalBookings || apiData?.totalAvailable || apiData?.totalStudentsWithBooks || 0;
 
   switch (type) {
-    case "student":
+    case "teacher":
       data = {
-        title: "STUDENTS",
+        title: "TEACHERS",
         isMoney: false,
         link: (
-          <Link to="/students" style={{ textDecoration: "none", color: "blue" }}>
-            See all students
+          <Link to="/teachers" style={{ textDecoration: "none", color: "blue" }}>
+            See all teachers
           </Link>
         ),
         icon: (
@@ -62,13 +62,13 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "book":
+    case "subject":
       data = {
-        title: "BOOKS",
+        title: "SUBJECTS",
         isMoney: false,
         link: (
-          <Link to="/books" style={{ textDecoration: "none", color: "blue" }}>
-            See all books
+          <Link to="/subjects" style={{ textDecoration: "none", color: "blue" }}>
+            See all subjects
           </Link>
         ),
         icon: (
@@ -82,13 +82,13 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "students":
+    case "class":
       data = {
-        title: "Students with Books",
+        title: "CLASSES",
         isMoney: false,
         link: (
-          <Link to="/students" style={{ textDecoration: "none", color: "blue" }}>
-            View all students
+          <Link to="/classes" style={{ textDecoration: "none", color: "blue" }}>
+            View all classes
           </Link>
         ),
         icon: (
@@ -102,9 +102,9 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "available":
+    case "lesson":
       data = {
-        title: "AVAILABLE BOOKS",
+        title: "TOTAL LESSONS",
         isMoney: false,
         link: (
           <Link to="/books" style={{ textDecoration: "none", color: "blue" }}>

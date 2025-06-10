@@ -1,56 +1,29 @@
 export const userColumns = [
-  { field: "studentId", headerName: "ID", width: 70 },
+  { field: "teacherId", headerName: "Load Number", width: 200, headerAlign: "center", align: "center" },
   {
-    field: "name",
-    headerName: "UserName",
+    field: "teacherName",
+    headerName: "Teacher Name",
     width: 200,
+    headerAlign: "center", align: "center",
     renderCell: (params) => (
       <div className="cellWithImg">
-        {/* <img
-          className="cellImg"
-          src={params.row.avatar || "https://i.ibb.co/MBtjqXQ/no-avatar.gif"}
-          alt="avatar"
-        /> */}
-        {params.row.name}
+        {params.row.teacherName}
       </div>
     ),
   },
-  { field: "email", headerName: "Email", width: 230 },
-  { field: "role", headerName: "Role", width: 120 },
-  { field: "createdAt", headerName: "Created At", width: 200 },
 ];
 
 export const postColumns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "bookId", headerName: "Book ID", width: 200 },
-  { field: "title", headerName: "Title", width: 200 },
-  { field: "subject", headerName: "Subject", width: 200 },
-  { field: "available", headerName: "Available", width: 150, renderCell: (params) => (
-    <span>{params.row.available ? "Yes" : "No"}</span>
-  ), },
-  // { field: "bedroom", headerName: "Bedrooms", width: 100 },
-  // { field: "bathroom", headerName: "Bathrooms", width: 100 },
-  { field: "createdAt", headerName: "Created At", width: 180 },
-  {
-    field: "images",
-    headerName: "Images",
-    width: 120,
-    renderCell: (params) => (
-      <img className="cellImg" src={params.row.images[0] || "https://via.placeholder.com/50"} alt="post" />
-    ),
-  },
+  { field: "id", headerName: "ID", width: 70, headerAlign: "center", align: "center" },
+  //{ field: "bookId", headerName: "Book ID", width: 200, headerAlign: "center", align: "center" },
+  { field: "code", headerName: "Subject Code", width: 200, headerAlign: "center", align: "center" },
+  { field: "subjectName", headerName: "Subject", width: 200, headerAlign: "center", align: "center" },
 ];
 
 export const postDetailColumns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "desc", headerName: "Description", width: 300 },
-  { field: "utilities", headerName: "Utilities", width: 150 },
-  { field: "pet", headerName: "Pet Policy", width: 150 },
-  { field: "income", headerName: "Min. Income", width: 120 },
-  { field: "size", headerName: "Size (sqft)", width: 120 },
-  { field: "school", headerName: "Nearby Schools", width: 150 },
-  { field: "bus", headerName: "Bus Stops", width: 120 },
-  { field: "restaurant", headerName: "Restaurants", width: 150 },
+  { field: "formLevel", headerName: "Class Level", width: 70 },
+  { field: "ClassName", headerName: "Class Name", width: 200 },
+  { field: "stream", headerName: "Stream", width: 150 }
 ];
 
 export const savedPostColumns = [

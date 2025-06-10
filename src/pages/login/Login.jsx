@@ -17,13 +17,15 @@ function Login() {
   setError("");
   const formData = new FormData(e.target);
 
-  const username = formData.get("username");
+  const userId = formData.get("userId");
   const password = formData.get("password");
 
   try {
-    const res = await apiRequest.post("/auth/login", { username, password });
+    const res = await apiRequest.post("/auth/login", { userId, password });
+    const { role } = res.data.user;
+    console.log("Login Response:",role);
 
-    if (res.data.role === "admin") {
+    if (role === "teacher" || role === "librarian") {
       updateUser(res.data);
       
       navigate("/");
@@ -43,12 +45,12 @@ function Login() {
         <form onSubmit={handleSubmit}>
           <h1>Welcome back</h1>
           <input
-            name="username"
+            name="userId"
             required
             minLength={3}
             maxLength={20}
             type="text"
-            placeholder="Username"
+            placeholder="UserId"
           />
           <input
             name="password"

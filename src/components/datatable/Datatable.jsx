@@ -86,7 +86,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
           className={`viewButton ${darkMode ? "dark" : "light"}`}
           onClick={() => handleAssignedTo(params.row.id)}
         >
-          {path === "students" ? "Books" : "Student"}
+          {path === "teachers" ? "Subjects" : path==="classes" ? "Subjects" : " Assigned"}
         </button>
       </div>
     ),
@@ -164,11 +164,11 @@ const Datatable = ({ columns, searchQueryProp }) => {
       <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <div className={`datatable ${darkMode ? "dark" : "light"}`}>
           <div className="datatableTitle">
-            {path === "students"
-              ? "Students"
-              : path === "books"
-              ? "Books"
-              : "Bookings"}
+            {path === "teachers"
+              ? "Teachers"
+              : path === "subjects"
+              ? "Subjects"
+              : "Classes"}
             <button className="link" onClick={() => navigate(`/${path}/new`)}>
               Add New
             </button>

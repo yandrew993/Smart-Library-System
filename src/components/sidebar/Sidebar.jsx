@@ -21,7 +21,6 @@ import apiRequest from "../../lib/apiRequest";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-
 // Helper function to clear cookies
 const clearCookies = () => {
   document.cookie.split(";").forEach((cookie) => {
@@ -59,7 +58,7 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="top">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">E-Housing</span>
+          <span className="logo">Library System</span>
         </Link>
       </div>
       <hr />
@@ -73,41 +72,41 @@ const Sidebar = () => {
             </li>
           </Link>
           <p className="title">LISTS</p>
-          <Link to="/students" style={{ textDecoration: "none" }}>
+          <Link to="/teachers" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
-              <span>Students</span>
+              <span>Teachers</span>
             </li>
           </Link>
-          <Link to="/books" style={{ textDecoration: "none" }}>
+          <Link to="/subjects" style={{ textDecoration: "none" }}>
             <li>
               <BookIcon className="icon" />
-              <span>Books</span>
+              <span>Subjects</span>
             </li>
           </Link>
-          <Link to="/issuebook" style={{ textDecoration: "none" }}>
-          <li>
-            <PaymentIcon className="icon" />
-            <span>Issue Book</span>
-          </li>
+          <Link to="/assignteacher" style={{ textDecoration: "none" }}>
+            <li>
+              <PaymentIcon className="icon" />
+              <span>Assign Subject</span>
+            </li>
           </Link>
-            <Link to="/returnbook" style={{ textDecoration: "none" }}>
-          <li>
-            <PaymentIcon className="icon" />
-            <span>Return Book</span>
-          </li>
-          </Link>
-          <Link to="#" style={{ textDecoration: "none" }}>
-          <li>
-            <PaymentIcon className="icon" />
-            <span>Student Analytics</span>
-          </li>
+          <Link to="/classes" style={{ textDecoration: "none" }}>
+            <li>
+              <PaymentIcon className="icon" />
+              <span>Classes</span>
+            </li>
           </Link>
           <Link to="#" style={{ textDecoration: "none" }}>
-          <li>
-            <PaymentIcon className="icon" />
-            <span>Books Chart</span>
-          </li>
+            <li>
+              <PaymentIcon className="icon" />
+              <span>Student Analytics</span>
+            </li>
+          </Link>
+          <Link to="#" style={{ textDecoration: "none" }}>
+            <li>
+              <PaymentIcon className="icon" />
+              <span>Timetable</span>
+            </li>
           </Link>
           {/* <p className="title">USEFUL</p>
           <li>
@@ -153,20 +152,20 @@ const Sidebar = () => {
         ></div> */}
         <ul>
           <p className="title">USER</p>
-        {/* <li>
+          {/* <li>
             <SettingsApplicationsIcon className="icon" />
             <span>Settings</span>
           </li> */}
           <Link to="/profile" style={{ textDecoration: "none" }}>
-          <li>
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
-          </li>
+            <li>
+              <AccountCircleOutlinedIcon className="icon" />
+              <span>Profile</span>
+            </li>
           </Link>
           <li onClick={handleLogout} style={{ cursor: "pointer" }}>
-  <ExitToAppIcon className="icon" />
-  <span>Logout</span>
-</li>
+            <ExitToAppIcon className="icon" />
+            <span>Logout</span>
+          </li>
         </ul>
       </div>
     </div>

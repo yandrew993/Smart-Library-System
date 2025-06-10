@@ -6,70 +6,103 @@ import apiRequest from "../../lib/apiRequest";
 import "./issueBook.scss";
 
 function IssueBook() {
-  const [bookId, setBookId] = useState("");
-  const [studentId, setStudentId] = useState("");
-  const [books, setBooks] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [searchBookTerm, setSearchBookTerm] = useState("");
-  const [searchStudentTerm, setSearchStudentTerm] = useState("");
-  const [filteredBooks, setFilteredBooks] = useState([]);
-  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [subjectCode, setSubjectCode] = useState("");
+  const [teacherId, setTeacherId] = useState("");
+  const [teacherName, setTeacherName] = useState("");
+  const [className, setClassName] = useState("");
+  const [subjects, setSubjects] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [searchClassTerm, setSearchClassTerm] = useState("");
+  const [searchSubjectTerm, setSearchSubjectTerm] = useState("");
+  const [searchTeacherTerm, setSearchTeacherTerm] = useState("");
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
+  const [filteredTeachers, setFilteredTeachers] = useState([]);
+  const [filteredClasses, setFilteredClasses] = useState([]);
   const [isBookDropdownOpen, setIsBookDropdownOpen] = useState(false);
   const [isStudentDropdownOpen, setIsStudentDropdownOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState(null);
-  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isClassDropdownOpen, setIsClassDropdownOpen] = useState(false);
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [selectedClass, setSelectedClass] = useState(null);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const bookDropdownRef = useRef(null);
   const studentDropdownRef = useRef(null);
+  const classDropdownRef = useRef(null);
 
-  // Fetch books where available is true
+  // Fetch all subjects
   useEffect(() => {
-    const fetchBooks = async () => {
+    const fetchSubjects = async () => {
       try {
-        const res = await apiRequest.get("/books/available");
-        setBooks(res.data);
-        setFilteredBooks(res.data); // Initialize filtered books
+        const res = await apiRequest.get("/subjects");
+        setSubjects(res.data);
+        setFilteredSubjects(res.data); // Initialize filtered subjects
       } catch (err) {
-        console.error("Failed to fetch books:", err);
-        setError("Failed to load books.");
+        console.error("Failed to fetch subjects:", err);
+        setError("Failed to load subjects.");
       }
     };
-    fetchBooks();
+    fetchSubjects();
   }, []);
 
-  // Fetch all students
+  // Fetch all teachers
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchTeachers = async () => {
       try {
-        const res = await apiRequest.get("/students");
-        setStudents(res.data);
-        setFilteredStudents(res.data); // Initialize filtered students
+        const res = await apiRequest.get("/teachers");
+        setTeachers(res.data);
+        setFilteredTeachers(res.data); // Initialize filtered teachers
       } catch (err) {
-        console.error("Failed to fetch students:", err);
-        setError("Failed to load students.");
+        console.error("Failed to fetch teachers:", err);
+        setError("Failed to load teachers.");
       }
     };
-    fetchStudents();
+    fetchTeachers();
   }, []);
 
-  // Filter books based on search term
+  // Fetch all classes
   useEffect(() => {
-    const filtered = books.filter((book) =>
-      book.bookId.toUpperCase().includes(searchBookTerm.toUpperCase())
-    );
-    setFilteredBooks(filtered);
-  }, [searchBookTerm, books]);
+    const fetchClasses = async () => {
+      try {
+        const res = await apiRequest.get("/classes");
+        setClasses(res.data);
+        setFilteredClasses(res.data); // Initialize filtered classes
+      } catch (err) {
+        console.error("Failed to fetch classes:", err);
+        setError("Failed to load classes.");
+      }
+    };
+    fetchClasses();
+  }, []);
 
-  // Filter students based on search term
+  // Filter subjects based on search term
   useEffect(() => {
-    const filtered = students.filter((student) =>
-      student.name.toLowerCase().includes(searchStudentTerm.toLowerCase())
+    const filtered = subjects.filter(
+      (subject) =>
+        subject.code.includes(searchSubjectTerm) ||
+        subject.subjectName.toLowerCase().includes(searchSubjectTerm.toLowerCase())
     );
-    setFilteredStudents(filtered);
-  }, [searchStudentTerm, students]);
+    setFilteredSubjects(filtered);
+  }, [searchSubjectTerm, subjects]);
+
+  // Filter teachers based on search term
+  useEffect(() => {
+    const filtered = teachers.filter((teacher) =>
+      teacher.teacherName.toLowerCase().includes(searchTeacherTerm.toLowerCase())
+    );
+    setFilteredTeachers(filtered);
+  }, [searchTeacherTerm, teachers]);
+
+  // Filter classes based on search term
+  useEffect(() => {
+    const filtered = classes.filter((classObj) =>
+      classObj.ClassName.toLowerCase().includes(searchClassTerm.toLowerCase())
+    );
+    setFilteredClasses(filtered);
+  }, [searchClassTerm, classes]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,29 +110,32 @@ function IssueBook() {
     setError("");
     setSuccessMessage("");
 
-    if (!bookId || !studentId) {
-      setError("Please select both a book and a student.");
+    if (!subjectCode || !teacherName || !className) {
+      setError("Please select the required fields.");
       setIsLoading(false);
       return;
     }
 
     try {
-      const res = await apiRequest.post("/books/issue", {
-        bookId,
-        studentId,
+      const res = await apiRequest.post("/assignteacher", {
+        code: subjectCode,
+        teacherName,
+        ClassName: className,
       });
-      setSuccessMessage("Book issued successfully!");
-      setBookId("");
-      setStudentId("");
-      setSelectedBook(null);
-      setSelectedStudent(null);
+      setSuccessMessage("Subject assigned successfully!");
+      setSubjectCode("");
+      setTeacherName("");
+      setClassName("");
+      setSelectedSubject(null);
+      setSelectedTeacher(null);
+      setSelectedClass(null);
       setTimeout(() => {
         setSuccessMessage("");
-        navigate("/books"); // Redirect to books page
+        navigate("/subjects"); // Redirect to subjects page
       }, 3000);
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.error || "An error occurred while issuing the book.");
+      setError(err.response?.data?.error || "An error occurred while assigning the subject.");
     } finally {
       setIsLoading(false);
     }
@@ -112,98 +148,149 @@ function IssueBook() {
         <Navbar />
         <div className="issueBookPage">
           <div className="formContainer">
-            <h2>Issue Book</h2>
+            <h2>Assign Subject</h2>
             <form onSubmit={handleSubmit}>
-              {/* Book Selection */}
+              {/* Subject Selection */}
               <div className="custom-select" ref={bookDropdownRef}>
                 <div
                   className="select-header"
                   onClick={() => {
                     setIsBookDropdownOpen(!isBookDropdownOpen);
-                    setIsStudentDropdownOpen(false); // Close student dropdown
+                    setIsStudentDropdownOpen(false); // Close teacher dropdown
+                    setIsClassDropdownOpen(false); // Close class dropdown
                   }}
                 >
-                  {selectedBook
-                    ? `${selectedBook.bookId}${selectedBook.title ? ` - ${selectedBook.title}` : ""}`
-                    : "Select Book"}
+                  {selectedSubject
+                    ? `${selectedSubject.code}${selectedSubject.subjectName ? ` - ${selectedSubject.subjectName}` : ""}`
+                    : "Select Subject"}
                 </div>
                 {isBookDropdownOpen && (
                   <div className="select-dropdown">
                     <input
                       type="text"
-                      placeholder="Search books..."
-                      value={searchBookTerm}
-                      onChange={(e) => setSearchBookTerm(e.target.value)}
+                      placeholder="Search subjects..."
+                      value={searchSubjectTerm}
+                      onChange={(e) => setSearchSubjectTerm(e.target.value)}
                       autoFocus
                       className="search-input"
                     />
                     <div className="options-list">
-                      {filteredBooks.length > 0 ? (
-                        filteredBooks.map((book) => (
+                      {filteredSubjects.length > 0 ? (
+                        filteredSubjects.map((subject) => (
                           <div
-                            key={book.id}
+                            key={subject.id}
                             className="option"
                             onClick={() => {
-                              setBookId(book.id);
-                              setSelectedBook(book);
+                              setSubjectCode(subject.code);
+                              setSelectedSubject(subject);
                               setIsBookDropdownOpen(false);
-                              setSearchBookTerm("");
+                              setSearchSubjectTerm("");
                             }}
                           >
-                            {book.bookId}
-                            {book.title ? ` - ${book.title}` : ""}
+                            {subject.code}
+                            {subject.subjectName ? ` - ${subject.subjectName}` : ""}
                           </div>
                         ))
                       ) : (
-                        <div className="no-results">No books found</div>
+                        <div className="no-results">No subjects found</div>
                       )}
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Student Selection */}
+              {/* Teacher Selection */}
               <div className="custom-select" ref={studentDropdownRef}>
                 <div
                   className="select-header"
                   onClick={() => {
                     setIsStudentDropdownOpen(!isStudentDropdownOpen);
-                    setIsBookDropdownOpen(false); // Close book dropdown
+                    setIsBookDropdownOpen(false); // Close subject dropdown
+                    setIsClassDropdownOpen(false); // Close class dropdown
                   }}
                 >
-                  {selectedStudent
-                    ? `${selectedStudent.id}${selectedStudent.name ? ` - ${selectedStudent.name}` : ""}`
-                    : "Select Student"}
+                  {selectedTeacher
+                    ? `${selectedTeacher.teacherId}${selectedTeacher.teacherName ? ` - ${selectedTeacher.teacherName}` : ""}`
+                    : "Select Teacher"}
                 </div>
                 {isStudentDropdownOpen && (
                   <div className="select-dropdown">
                     <input
                       type="text"
-                      placeholder="Search students..."
-                      value={searchStudentTerm}
-                      onChange={(e) => setSearchStudentTerm(e.target.value)}
+                      placeholder="Search teachers..."
+                      value={searchTeacherTerm}
+                      onChange={(e) => setSearchTeacherTerm(e.target.value)}
                       autoFocus
                       className="search-input"
                     />
                     <div className="options-list">
-                      {filteredStudents.length > 0 ? (
-                        filteredStudents.map((student) => (
+                      {filteredTeachers.length > 0 ? (
+                        filteredTeachers.map((teacher) => (
                           <div
-                            key={student.id}
+                            key={teacher.id}
                             className="option"
                             onClick={() => {
-                              setStudentId(student.id);
-                              setSelectedStudent(student);
+                              setTeacherId(teacher.teacherId);
+                              setTeacherName(teacher.teacherName);
+                              setSelectedTeacher(teacher);
                               setIsStudentDropdownOpen(false);
-                              setSearchStudentTerm("");
+                              setSearchTeacherTerm("");
                             }}
                           >
-                            {student.studentId}
-                            {student.name ? ` - ${student.name}` : ""}
+                            {teacher.teacherId}
+                            {teacher.teacherName ? ` - ${teacher.teacherName}` : ""}
                           </div>
                         ))
                       ) : (
-                        <div className="no-results">No students found</div>
+                        <div className="no-results">No teachers found</div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Class Selection */}
+              <div className="custom-select" ref={classDropdownRef}>
+                <div
+                  className="select-header"
+                  onClick={() => {
+                    setIsClassDropdownOpen(!isClassDropdownOpen);
+                    setIsBookDropdownOpen(false); // Close subject dropdown
+                    setIsStudentDropdownOpen(false); // Close teacher dropdown
+                  }}
+                >
+                  {selectedClass
+                    ? `${selectedClass.ClassName}`
+                    : "Select Class"}
+                </div>
+                {isClassDropdownOpen && (
+                  <div className="select-dropdown">
+                    <input
+                      type="text"
+                      placeholder="Search classes..."
+                      value={searchClassTerm}
+                      onChange={(e) => setSearchClassTerm(e.target.value)}
+                      autoFocus
+                      className="search-input"
+                    />
+                    <div className="options-list">
+                      {filteredClasses.length > 0 ? (
+                        filteredClasses.map((classObj) => (
+                          <div
+                            key={classObj.id}
+                            className="option"
+                            onClick={() => {
+                              setClassName(classObj.ClassName);
+                              setSelectedClass(classObj);
+                              setIsClassDropdownOpen(false);
+                              setSearchClassTerm("");
+                            }}
+                          >
+                            {classObj.ClassName}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="no-results">No classes found</div>
                       )}
                     </div>
                   </div>
@@ -213,7 +300,7 @@ function IssueBook() {
               {/* Submit Button */}
               <div className="form-actions">
                 <button type="submit" className="submit-btn" disabled={isLoading}>
-                  {isLoading ? "Issuing..." : "Issue Book"}
+                  {isLoading ? "Assigning..." : "Assign Subject"}
                 </button>
               </div>
 

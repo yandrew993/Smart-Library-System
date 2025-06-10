@@ -9,19 +9,21 @@ import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
-import { bookingColumns, postColumns, userColumns } from "./datatablesource";
+import { bookingColumns, postColumns, userColumns, postDetailColumns } from "./datatablesource";
 import NewHotel from "./components/newHotel/NewHotel";
-// import NewRoom from "./pages/newRoom/NewRoom";
 import SingleHouse from "./pages/singleHouse/SingleHouse";
-import Payment from "./pages/payments/Payment";
+//import Payment from "./pages/payments/Payment";
 import Profile from "./pages/profile/Profile";
 import Booking from "./pages/booking/Booking";
 import IssueBook from "./components/issueBook/IssueBook";
-import ReturnBook from "./components/returnBook/ReturnBook";
+import NewClass from "./components/newClass/NewClass";
+import NewTeacher from "./components/newTeacher/NewTeacher";
+import Teachercount from "./components/teacherCountLesson/TeacherCountLesson";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
+  // ProtectedRoute component to restrict access to authenticated users
   const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
 
@@ -36,36 +38,38 @@ function App() {
     <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
+          {/* Public Route */}
           <Route path="/login" element={<Login />} />
+
+          {/* Protected Routes */}
           <Route
             path="/*"
             element={
               <ProtectedRoute>
                 <Routes>
                   <Route index element={<Home />} />
-                  <Route path="students">
+                  <Route path="teachers">
                     <Route index element={<List columns={userColumns} />} />
                     <Route path="search/:Id" element={<Single />} />
-                    <Route
-                      path="new"
-                      element={<New inputs={userInputs} title="Add New User" />}
-                    />
+                    <Route path="new" element={<NewTeacher />} />
                   </Route>
-                  <Route path="books">
+                  <Route path="subjects">
                     <Route index element={<List columns={postColumns} />} />
                     <Route path="search/:Id" element={<SingleHouse />} />
                     <Route path="new" element={<NewHotel />} />
+                    <Route path="new" element={<Teachercount />} />
                   </Route>
                   <Route path="bookings">
                     <Route index element={<List columns={bookingColumns} />} />
                     <Route path="search/:Id" element={<Booking />} />
-                    {/* <Route path="new" element={<NewRoom />} /> */}
                   </Route>
-                  <Route path="issuebook">
+                  <Route path="assignteacher">
                     <Route index element={<IssueBook />} />
                   </Route>
-                  <Route path="returnbook">
-                    <Route index element={<ReturnBook />} />
+                  <Route path="classes">
+                    <Route index element = {<List columns={postDetailColumns} />} />
+                    <Route path="search/:Id" element={<SingleHouse />} />
+                    <Route path="new" element={<NewClass />} />
                   </Route>
                   <Route path="profile">
                     <Route index element={<Profile />} />

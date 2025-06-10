@@ -4,9 +4,9 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import apiRequest from "../../lib/apiRequest";
 import { DarkModeContext } from "../../context/darkModeContext";
-import "./newHotel.scss";
+import "./newClass.scss";
 
-function NewBook() {
+function NewClass() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -19,12 +19,13 @@ function NewBook() {
     setIsLoading(true);
 
     try {
-      const res = await apiRequest.post("/addsubject", {
-        subjectName: inputs.subjectName,
-        code: inputs.code,
+      const res = await apiRequest.post("/addclass", {
+        ClassName: inputs.ClassName,
+        stream: inputs.stream,
+        formLevel: parseInt(inputs.formLevel, 10)
         //bookId: inputs.bookId,
       });
-      navigate("/subjects");
+      navigate("/classes"); // Redirect to subjects page after successful addition
     } catch (err) {
       console.log(err);
       setError(err.message || "An error occurred while adding the book.");
@@ -46,22 +47,22 @@ function NewBook() {
               </button>
               <form onSubmit={handleSubmit}>
                 <div className="item">
-                  <label htmlFor="title">Subject Code</label>
-                  <input id="title" name="code" type="text" required />
+                  <label htmlFor="title">Class Name</label>
+                  <input id="title" name="ClassName" type="text" required />
                 </div>
                 <div className="item">
-                  <label htmlFor="subject">Subject</label>
-                  <input id="subject" name="subjectName" type="text" required />
+                  <label htmlFor="subject">Class Level</label>
+                  <input id="subject" name="formLevel" type="text" required />
                 </div>
-                {/* <div className="item">
-                  <label htmlFor="bookId">Book ID</label>
-                  <input id="bookId" name="bookId" type="text" required />
-                </div> */}
+                <div className="item">
+                  <label htmlFor="bookId">Stream</label>
+                  <input id="bookId" name="stream" type="text" required />
+                </div>
                 <button disabled={isLoading} className="sendButton" type="submit">
-                  Add Subject
+                  Add Class
                 </button>
                 {error && <span className="error">{error}</span>}
-                {isLoading && <span className="loading">Adding subject...</span>}
+                {isLoading && <span className="loading">Adding ...</span>}
               </form>
             </div>
           </div>
@@ -71,4 +72,4 @@ function NewBook() {
   );
 }
 
-export default NewBook;
+export default NewClass;
