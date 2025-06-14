@@ -25,6 +25,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
 
   const { data, loading, error } = useFetch(`/api/${path}`);
 
+  // Format and validate fetched data
   useEffect(() => {
     if (!data || !Array.isArray(data)) {
       console.error(`Invalid data for path "${path}":`, data);
@@ -39,6 +40,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
     setList(formatted);
   }, [data, path]);
 
+  // Filter list based on search input
   useEffect(() => {
     if (searchQueryProp && Array.isArray(data)) {
       const filtered = data.filter((item) =>
@@ -52,6 +54,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
     }
   }, [searchQueryProp, data]);
 
+  // Fetch assigned data (e.g., teacher's subjects)
   const handleAssignedTo = async (teacherName) => {
     try {
       if (!teacherName) {
@@ -70,6 +73,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
     }
   };
 
+  // Custom column for AssignedTo button
   const assignedToColumn = {
     field: "assignedTo",
     headerName: "Assigned To",
@@ -86,6 +90,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
     ),
   };
 
+  // Custom column for Actions (View/Delete)
   const actionColumn = {
     field: "action",
     headerName: "Action",
@@ -94,7 +99,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
       <div className="cellAction">
         <button
           className={`viewButton ${darkMode ? "dark" : "light"}`}
-          onClick={() => navigate(`/${path}/search/${params.row.id}`)}
+          onClick={() => navigate(`/api/${path}/search/${params.row.id}`)}
         >
           View
         </button>
@@ -142,7 +147,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
               : path === "subjects"
               ? "Subjects"
               : "Classes"}
-            <button className="link" onClick={() => navigate(`/${path}/new`)}>
+            <button className="link" onClick={() => navigate(`/api/${path}/new`)}>
               Add New
             </button>
           </div>
@@ -161,12 +166,18 @@ const Datatable = ({ columns, searchQueryProp }) => {
               <DataGrid
                 className="datagrid"
                 rows={list}
-                columns={[...columns.slice(0, 5), assignedToColumn, actionColumn]}
+                columns={[
+                  ...columns.slice(0, 5),
+                  assignedToColumn,
+                  actionColumn,
+                ]}
                 pageSize={9}
                 rowsPerPageOptions={[9]}
                 checkboxSelection
                 autoHeight
-                getRowId={(row) => row.id || row._id || row.teacherId || row.classId}
+                getRowId={(row) =>
+                  row.id || row._id || row.teacherId || row.classId
+                }
               />
             )}
           </div>
@@ -184,7 +195,9 @@ const Datatable = ({ columns, searchQueryProp }) => {
                     popupData.map((item, idx) => (
                       <li key={idx}>
                         {path === "teachers"
-                          ? `${item.subjectName || "Unknown"} - ${item.className || "Unknown"}`
+                          ? `${item.subjectName || "Unknown"} - ${
+                              item.className || "Unknown"
+                            }`
                           : `${item.ClassName || "Unknown"} (${item.studentId || "N/A"})`}
                       </li>
                     ))
