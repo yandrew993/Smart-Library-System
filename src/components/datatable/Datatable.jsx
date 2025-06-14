@@ -69,7 +69,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
       let response;
       if (path === "teachers") {
         // Fetch subjects and classes assigned to the teacher
-        response = await apiRequest.get(`/api/teachers/${teacherName}/subjects`);
+        response = await apiRequest.get(`/teachers/${teacherName}/subjects`);
         const responseData = Array.isArray(response.data)
           ? response.data
           : [response.data]; // Ensure data is an array
@@ -107,7 +107,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
       <div className="cellAction">
         <button
           className={`viewButton ${darkMode ? "dark" : "light"}`}
-          onClick={() => navigate(`/${path}/search/${params.row.id}`)}
+          onClick={() => navigate(`/api/${path}/search/${params.row.id}`)}
         >
           View
         </button>
