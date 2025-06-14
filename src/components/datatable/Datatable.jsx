@@ -195,17 +195,15 @@ const Datatable = ({ columns, searchQueryProp }) => {
               </div>
             ) : (
               <DataGrid
-                className="datagrid"
-                rows={list}
-                columns={gridColumns}
-                pageSize={9}
-                rowsPerPageOptions={[9]}
-                checkboxSelection
-                autoHeight
-                getRowId={(row) =>
-                  row.id || row._id || row.teacherId || row.classId
-                } // Specify the unique field
-              />
+              className="datagrid"
+              rows={list}
+              columns={gridColumns}
+              pageSize={9}
+              rowsPerPageOptions={[9]}
+              checkboxSelection
+              autoHeight
+              getRowId={(row) => row.id || row._id || row.teacherId || row.classId} // Specify the unique field
+            />
             )}
           </div>
 
