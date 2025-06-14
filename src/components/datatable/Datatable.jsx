@@ -7,7 +7,11 @@ import apiRequest from "../../lib/apiRequest";
 import Cookies from "js-cookie";
 import { DarkModeContext } from "../../context/darkModeContext";
 
-import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import {
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 import { CircularProgress } from "@mui/material";
 
 const Datatable = ({ columns, searchQueryProp }) => {
@@ -54,20 +58,23 @@ const Datatable = ({ columns, searchQueryProp }) => {
     }
   }, [searchQueryProp, data]);
 
-  const handleAssignedTo = async (id) => {
+  const handleAssignedTo = async (teacherName) => {
     try {
+      if (!teacherName) {
+        console.error("Error: teacherName is undefined or invalid.");
+        setPopupData([]);
+        return;
+      }
+  
       let response;
-      if (path === "students") {
-        // Fetch books assigned to the student
-        response = await apiRequest.get(`/students/${id}/books`);
-        setPopupData(response.data); // Set popup data
-        console.log("Assigned books data:", response.data);
-      } else if (path === "books") {
-        // Fetch student assigned to the book
-        response = await apiRequest.get(`/books/${id}/student`);
-        const responseData = Array.isArray(response.data) ? response.data : [response.data]; // Ensure data is an array
+      if (path === "teachers") {
+        // Fetch subjects and classes assigned to the teacher
+        response = await apiRequest.get(`/teachers/${teacherName}/subjects`);
+        const responseData = Array.isArray(response.data)
+          ? response.data
+          : [response.data]; // Ensure data is an array
         setPopupData(responseData); // Set popup data
-        console.log("Assigned student data:", responseData);
+        console.log("Assigned subjects and classes data:", responseData);
       }
       setShowPopup(true); // Show the popup
     } catch (error) {
@@ -84,9 +91,9 @@ const Datatable = ({ columns, searchQueryProp }) => {
       <div className="cellAction">
         <button
           className={`viewButton ${darkMode ? "dark" : "light"}`}
-          onClick={() => handleAssignedTo(params.row.id)}
+          onClick={() => handleAssignedTo(params.row.teacherName)} // Pass teacherName
         >
-          {path === "teachers" ? "Subjects" : path==="classes" ? "Subjects" : " Assigned"}
+          {path === "teachers" ? "Subjects" : "Assigned"}
         </button>
       </div>
     ),
@@ -112,7 +119,9 @@ const Datatable = ({ columns, searchQueryProp }) => {
               await apiRequest.delete(`/${path}/${params.row.id}`, {
                 headers: { Authorization: `Bearer ${token}` },
               });
-              setList((prevList) => prevList.filter((item) => item.id !== params.row.id));
+              setList((prevList) =>
+                prevList.filter((item) => item.id !== params.row.id)
+              );
             } catch (err) {
               console.error("Failed to delete item:", err);
             }
@@ -173,7 +182,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
               Add New
             </button>
           </div>
-  
+
           <div className={`tableWrapper ${showPopup ? "blurred" : ""}`}>
             {loading ? (
               <div className="loadingContainer">
@@ -197,25 +206,36 @@ const Datatable = ({ columns, searchQueryProp }) => {
               />
             )}
           </div>
-  
+
           {showPopup && (
             <div className="popup">
               <div className={`popupContent ${darkMode ? "dark" : "light"}`}>
-                <h3>{path === "students" ? "Books Assigned to Student" : "Student Assigned to Book"}</h3>
+                <h3>
+                  {path === "teachers"
+                    ? "Subjects Assigned to Teacher"
+                    : "Student Assigned to Book"}
+                </h3>
                 <ul>
                   {popupData && popupData.length > 0 ? (
                     popupData.map((item, index) => (
                       <li key={index}>
-                        {path === "students"
-                          ? `${item.title || "Unknown Title"} (${item.bookId || "Unknown Book ID"})`
-                          : `${item.name || "Unknown Name"} (${item.studentId || "Unknown Student ID"})`}
+                        {path === "teachers"
+                          ? `${item.subjectName || "Unknown Subject"} - ${
+                              item.className || "Unknown Class"
+                            }`
+                          : `${item.ClassName || "Unknown Name"} (${
+                              item.studentId || "Unknown Class"
+                            })`}
                       </li>
                     ))
                   ) : (
                     <p>No data available</p>
                   )}
                 </ul>
-                <button className="closeButton" onClick={() => setShowPopup(false)}>
+                <button
+                  className="closeButton"
+                  onClick={() => setShowPopup(false)}
+                >
                   Close
                 </button>
               </div>

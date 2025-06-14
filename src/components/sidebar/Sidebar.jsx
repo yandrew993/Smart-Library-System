@@ -58,7 +58,7 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="top">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">Library System</span>
+          <span className="logo">School Timetable</span>
         </Link>
       </div>
       <hr />
@@ -96,16 +96,16 @@ const Sidebar = () => {
               <span>Classes</span>
             </li>
           </Link>
-          <Link to="#" style={{ textDecoration: "none" }}>
+          <Link to="/viewtimetable" style={{ textDecoration: "none" }}>
             <li>
               <PaymentIcon className="icon" />
-              <span>Student Analytics</span>
+              <span>School Timetable</span>
             </li>
           </Link>
-          <Link to="#" style={{ textDecoration: "none" }}>
+          <Link to="/timetable" style={{ textDecoration: "none" }}>
             <li>
               <PaymentIcon className="icon" />
-              <span>Timetable</span>
+              <span>Generate</span>
             </li>
           </Link>
           {/* <p className="title">USEFUL</p>

@@ -19,6 +19,8 @@ import IssueBook from "./components/issueBook/IssueBook";
 import NewClass from "./components/newClass/NewClass";
 import NewTeacher from "./components/newTeacher/NewTeacher";
 import Teachercount from "./components/teacherCountLesson/TeacherCountLesson";
+import TimetablePage from "./components/timeTable/Timetable";
+import SchoolTablePage from "./components/schoolTable/SchoolTable";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -65,6 +67,12 @@ function App() {
                   </Route>
                   <Route path="assignteacher">
                     <Route index element={<IssueBook />} />
+                  </Route>
+                  <Route path="timetable">
+                    <Route index element={<TimetablePage />} />
+                  </Route>
+                  <Route path="viewtimetable">
+                    <Route index element={<SchoolTablePage />} />
                   </Route>
                   <Route path="classes">
                     <Route index element = {<List columns={postDetailColumns} />} />

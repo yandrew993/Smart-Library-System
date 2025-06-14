@@ -9,13 +9,13 @@ import { useState } from "react";
 
 const Featured = () => {
   // Fetch total payments
-  const { data: totalData, loading: totalLoading, error: totalError } = useFetch('/books/total/issued');
+  const { data: totalData, loading: totalLoading, error: totalError } = useFetch('/lessoncount');
   
   // Fetch payment stats
-  const { data: statsData, loading: statsLoading, error: statsError } = useFetch('/books/total/issued');
+  const { data: statsData, loading: statsLoading, error: statsError } = useFetch('/lessoncount');
   console.log("Stats Data:", statsData);
   // State for the target amount (could be stored in backend or set here)
-  const [target] = useState(50); // Set your target amount (e.g., 50,000)
+  const [target] = useState(100); // Set your target amount (e.g., 50,000)
   const totalDataValue = totalData?.totalIssued || 0; // Adjust based on your API response structure
   const getBooksLabel = (totalDataValue) => {
     if (totalDataValue < 1) return "None";

@@ -2,7 +2,8 @@ import "./widget.scss";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import SubjectOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import ClassOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import useFetch from "../../hooks/useFetch";
 import { Link } from "react-router-dom";
@@ -12,24 +13,24 @@ const Widget = ({ type }) => {
 
   const apiUrl =
     type === "teacher"
-      ? "/teachers/total"
+      ? "/teacherscount"
       : type === "subject"
-      ? "/subjects/total"
-      : type === "classes"
-      ? "/classes/total"
+      ? "/subjectscount"
+      : type === "class"
+      ? "/classescount"
       : type === "lesson"
-      ? "/books/total/available"
+      ? "/lessoncount"
       : null;
 
   const statsUrl =
     type === "teacher"
-      ? "/teachers/total"
+      ? "/teacherscount"
       : type === "subject"
-      ? "/subjects/total"
-      : type === "classes"
-      ? "/classes/total"
+      ? "/subjectscount"
+      : type === "class"
+      ? "/classescount"
       : type === "lesson"
-      ? "/books/total/available"
+      ? "/lessoncount"
       : null;
 
   const { data: apiData, loading, error } = useFetch(apiUrl);
@@ -39,7 +40,7 @@ const Widget = ({ type }) => {
   const isPositive = percentChange >= 0;
 
   // Extract the specific value from the API response
-  const totalValue = apiData?.totalStudents || apiData?.totalBooks || apiData?.totalBookings || apiData?.totalAvailable || apiData?.totalStudentsWithBooks || 0;
+  const totalValue = apiData?.totalTeachers || apiData?.totalSubjects || apiData?.totalClasses || apiData?.totalLessons || apiData?.totalStudentsWithBooks || 0;
 
   switch (type) {
     case "teacher":
@@ -72,7 +73,7 @@ const Widget = ({ type }) => {
           </Link>
         ),
         icon: (
-          <PersonOutlinedIcon
+          <SubjectOutlinedIcon
             className="icon"
             style={{
               backgroundColor: "rgba(128, 0, 128, 0.2)",
@@ -112,7 +113,7 @@ const Widget = ({ type }) => {
           </Link>
         ),
         icon: (
-          <ShoppingCartOutlinedIcon
+          <ClassOutlinedIcon
             className="icon"
             style={{ backgroundColor: "rgba(0, 128, 0, 0.2)", color: "green" }}
           />

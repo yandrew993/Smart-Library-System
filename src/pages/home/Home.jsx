@@ -3,8 +3,8 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import "./home.scss";
 import Widget from "../../components/widget/Widget";
-import Featured from "../../components/featured/Featured";
-import Chart from "../../components/chart/Chart";
+// import Featured from "../../components/featured/Featured";
+// import Chart from "../../components/chart/Chart";
 import Teachercount from "../../components/teacherCountLesson/TeacherCountLesson";
 // import Table from "../../components/table/Table";
 
@@ -21,9 +21,9 @@ const Home = () => {
           <Widget type="class" />
           <Widget type="lesson" />
         </div>
-        <div className="charts">
-          <Featured />
-          <Teachercount aspect={2 / 1} disableResizeObserver/>
+        <div className="content">
+          {/* <Featured aspect={2 / 1} disableResizeObserver/> */}
+          <Teachercount />
           
           {/* <Chart title="Last 6 Months (Book Issueing)" aspect={2 / 1} disableResizeObserver/> */}
         </div>
