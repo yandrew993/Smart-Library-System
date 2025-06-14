@@ -65,7 +65,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
         setPopupData([]);
         return;
       }
-  
+
       let response;
       if (path === "teachers") {
         // Fetch subjects and classes assigned to the teacher
@@ -202,7 +202,9 @@ const Datatable = ({ columns, searchQueryProp }) => {
                 rowsPerPageOptions={[9]}
                 checkboxSelection
                 autoHeight
-                getRowId={(row) => row.id}
+                getRowId={(row) =>
+                  row.id || row._id || row.teacherId || row.classId
+                } // Specify the unique field
               />
             )}
           </div>
