@@ -1,6 +1,6 @@
 import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+//import "leaflet/dist/leaflet.css";
 import "./map.scss";
 import { Link } from "react-router-dom";
 import L from "leaflet";
