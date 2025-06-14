@@ -6,7 +6,6 @@ import useFetch from "../../hooks/useFetch";
 import apiRequest from "../../lib/apiRequest";
 import Cookies from "js-cookie";
 import { DarkModeContext } from "../../context/darkModeContext";
-
 import {
   createTheme,
   ThemeProvider,
@@ -16,73 +15,65 @@ import { CircularProgress } from "@mui/material";
 
 const Datatable = ({ columns, searchQueryProp }) => {
   const location = useLocation();
-  const path = location.pathname.split("/")[1]; // Get "students", "books", or "bookings"
+  const path = location.pathname.split("/")[1];
   const navigate = useNavigate();
-  const [showPopup, setShowPopup] = useState(false);
   const { darkMode } = useContext(DarkModeContext);
+
+  const [list, setList] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
   const [popupData, setPopupData] = useState(null);
 
   const { data, loading, error } = useFetch(`/${path}`);
-  const [list, setList] = useState([]);
 
+  // Format and validate fetched data
   useEffect(() => {
-    if (!data) {
-      console.error(`Error: Data is null or undefined for path: ${path}`);
+    if (!data || !Array.isArray(data)) {
+      console.error(`Invalid data for path "${path}":`, data);
       return;
     }
 
-    if (!Array.isArray(data)) {
-      console.error(`Error: Data is not an array for path: ${path}`, data);
-      return;
-    }
-
-    // Ensure `_id` is mapped to `id` for `DataGrid`
-    const formattedData = data.map((item, index) => ({
+    const formatted = data.map((item, index) => ({
       ...item,
-      id: item.id || `temp-id-${index}`,
+      id: item.id || item._id || item.teacherId || item.classId || `temp-${index}`,
     }));
 
-    setList(formattedData);
+    setList(formatted);
   }, [data, path]);
 
+  // Filter list based on search input
   useEffect(() => {
-    if (searchQueryProp) {
-      const filteredData = data?.filter((item) =>
-        Object.values(item).some((value) =>
-          String(value).toLowerCase().includes(searchQueryProp.toLowerCase())
+    if (searchQueryProp && Array.isArray(data)) {
+      const filtered = data.filter((item) =>
+        Object.values(item).some((val) =>
+          String(val).toLowerCase().includes(searchQueryProp.toLowerCase())
         )
       );
-      setList(filteredData || []);
-    } else {
-      setList(data || []);
+      setList(filtered);
+    } else if (Array.isArray(data)) {
+      setList(data);
     }
   }, [searchQueryProp, data]);
 
+  // Fetch assigned data (e.g., teacher's subjects)
   const handleAssignedTo = async (teacherName) => {
     try {
       if (!teacherName) {
-        console.error("Error: teacherName is undefined or invalid.");
+        console.error("teacherName is missing.");
         setPopupData([]);
         return;
       }
 
-      let response;
-      if (path === "teachers") {
-        // Fetch subjects and classes assigned to the teacher
-        response = await apiRequest.get(`/teachers/${teacherName}/subjects`);
-        const responseData = Array.isArray(response.data)
-          ? response.data
-          : [response.data]; // Ensure data is an array
-        setPopupData(responseData); // Set popup data
-        console.log("Assigned subjects and classes data:", responseData);
-      }
-      setShowPopup(true); // Show the popup
-    } catch (error) {
-      console.error("Failed to fetch assigned data:", error);
-      setPopupData([]); // Ensure popupData is cleared on error
+      const response = await apiRequest.get(`/teachers/${teacherName}/subjects`);
+      const responseData = Array.isArray(response.data) ? response.data : [response.data];
+      setPopupData(responseData);
+      setShowPopup(true);
+    } catch (err) {
+      console.error("Error fetching assigned data:", err);
+      setPopupData([]);
     }
   };
 
+  // Custom column for AssignedTo button
   const assignedToColumn = {
     field: "assignedTo",
     headerName: "Assigned To",
@@ -91,7 +82,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
       <div className="cellAction">
         <button
           className={`viewButton ${darkMode ? "dark" : "light"}`}
-          onClick={() => handleAssignedTo(params.row.teacherName)} // Pass teacherName
+          onClick={() => handleAssignedTo(params.row.teacherName)}
         >
           {path === "teachers" ? "Subjects" : "Assigned"}
         </button>
@@ -99,6 +90,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
     ),
   };
 
+  // Custom column for Actions (View/Delete)
   const actionColumn = {
     field: "action",
     headerName: "Action",
@@ -119,11 +111,9 @@ const Datatable = ({ columns, searchQueryProp }) => {
               await apiRequest.delete(`/${path}/${params.row.id}`, {
                 headers: { Authorization: `Bearer ${token}` },
               });
-              setList((prevList) =>
-                prevList.filter((item) => item.id !== params.row.id)
-              );
+              setList((prev) => prev.filter((item) => item.id !== params.row.id));
             } catch (err) {
-              console.error("Failed to delete item:", err);
+              console.error("Delete failed:", err);
             }
           }}
         >
@@ -133,35 +123,14 @@ const Datatable = ({ columns, searchQueryProp }) => {
     ),
   };
 
-  const displayedColumns = columns.length > 5 ? columns.slice(0, 5) : columns;
-  const gridColumns = [...displayedColumns, assignedToColumn, actionColumn];
-
-  const darkTheme = createTheme({
-    palette: {
-      mode: "dark",
-    },
+  const theme = createTheme({
+    palette: { mode: darkMode ? "dark" : "light" },
     components: {
       MuiDataGrid: {
         styleOverrides: {
           root: {
-            backgroundColor: "#121212",
-            color: "#ffffff",
-          },
-        },
-      },
-    },
-  });
-
-  const lightTheme = createTheme({
-    palette: {
-      mode: "light",
-    },
-    components: {
-      MuiDataGrid: {
-        styleOverrides: {
-          root: {
-            backgroundColor: "#ffffff",
-            color: "#000000",
+            backgroundColor: darkMode ? "#121212" : "#fff",
+            color: darkMode ? "#fff" : "#000",
           },
         },
       },
@@ -170,7 +139,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
 
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+      <ThemeProvider theme={theme}>
         <div className={`datatable ${darkMode ? "dark" : "light"}`}>
           <div className="datatableTitle">
             {path === "teachers"
@@ -191,20 +160,24 @@ const Datatable = ({ columns, searchQueryProp }) => {
               </div>
             ) : error ? (
               <div className="errorContainer">
-                <p>Error fetching data: {error.message}</p>
+                <p>Error: {error.message}</p>
               </div>
             ) : (
               <DataGrid
                 className="datagrid"
                 rows={list}
-                columns={gridColumns}
+                columns={[
+                  ...columns.slice(0, 5),
+                  assignedToColumn,
+                  actionColumn,
+                ]}
                 pageSize={9}
                 rowsPerPageOptions={[9]}
                 checkboxSelection
                 autoHeight
                 getRowId={(row) =>
                   row.id || row._id || row.teacherId || row.classId
-                } // Specify the unique field
+                }
               />
             )}
           </div>
@@ -215,19 +188,17 @@ const Datatable = ({ columns, searchQueryProp }) => {
                 <h3>
                   {path === "teachers"
                     ? "Subjects Assigned to Teacher"
-                    : "Student Assigned to Book"}
+                    : "Assigned Details"}
                 </h3>
                 <ul>
-                  {popupData && popupData.length > 0 ? (
-                    popupData.map((item, index) => (
-                      <li key={index}>
+                  {popupData?.length > 0 ? (
+                    popupData.map((item, idx) => (
+                      <li key={idx}>
                         {path === "teachers"
-                          ? `${item.subjectName || "Unknown Subject"} - ${
-                              item.className || "Unknown Class"
+                          ? `${item.subjectName || "Unknown"} - ${
+                              item.className || "Unknown"
                             }`
-                          : `${item.ClassName || "Unknown Name"} (${
-                              item.studentId || "Unknown Class"
-                            })`}
+                          : `${item.ClassName || "Unknown"} (${item.studentId || "N/A"})`}
                       </li>
                     ))
                   ) : (
