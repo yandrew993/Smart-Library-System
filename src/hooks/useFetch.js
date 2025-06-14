@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import apiRequest from "../lib/apiRequest"; 
+import apiRequest from "../lib/apiRequest";
 
 const useFetch = (url) => {
   const [data, setData] = useState(null);
@@ -11,13 +11,14 @@ const useFetch = (url) => {
       setLoading(true);
       try {
         const res = await apiRequest.get(url);
-        console.log(url, res.data);
-        
+        console.log(`Fetching data from: ${url}`, res.data);
         setData(res.data);
       } catch (err) {
-        setError(err);
+        console.error(`Error fetching data from: ${url}`, err);
+        setError(err.response?.data || err.message || "Unknown error");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchData();
   }, [url]);
@@ -26,11 +27,14 @@ const useFetch = (url) => {
     setLoading(true);
     try {
       const res = await apiRequest.get(url);
+      console.log(`Re-fetching data from: ${url}`, res.data);
       setData(res.data);
     } catch (err) {
-      setError(err);
+      console.error(`Error re-fetching data from: ${url}`, err);
+      setError(err.response?.data || err.message || "Unknown error");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return { data, loading, error, reFetch };
