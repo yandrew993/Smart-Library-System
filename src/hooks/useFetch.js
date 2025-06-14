@@ -6,36 +6,35 @@ const useFetch = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const res = await apiRequest.get(url);
-        console.log(`Fetching data from: ${url}`, res.data);
-        setData(res.data);
-      } catch (err) {
-        console.error(`Error fetching data from: ${url}`, err);
-        setError(err.response?.data || err.message || "Unknown error");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [url]);
+  // Ensure the URL is prefixed with /api
+  const normalizedUrl = url.startsWith("/api") ? url : `/api${url}`;
 
-  const reFetch = async () => {
+  const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await apiRequest.get(url);
-      console.log(`Re-fetching data from: ${url}`, res.data);
-      setData(res.data);
+      const res = await apiRequest.get(normalizedUrl);
+
+      if (res?.data && typeof res.data === "object") {
+        console.log(`Fetched JSON from: ${normalizedUrl}`, res.data);
+        setData(res.data);
+      } else {
+        console.warn(`Unexpected response format from ${normalizedUrl}:`, res);
+        setError("Unexpected response format");
+        setData(null);
+      }
     } catch (err) {
-      console.error(`Error re-fetching data from: ${url}`, err);
+      console.error(`Error fetching from ${normalizedUrl}:`, err);
       setError(err.response?.data || err.message || "Unknown error");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [normalizedUrl]);
+
+  const reFetch = fetchData;
 
   return { data, loading, error, reFetch };
 };
