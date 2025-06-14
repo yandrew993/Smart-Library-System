@@ -9,7 +9,12 @@ import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
-import { bookingColumns, postColumns, userColumns, postDetailColumns } from "./datatablesource";
+import {
+  bookingColumns,
+  postColumns,
+  userColumns,
+  postDetailColumns,
+} from "./datatablesource";
 import NewHotel from "./components/newHotel/NewHotel";
 import SingleHouse from "./pages/singleHouse/SingleHouse";
 //import Payment from "./pages/payments/Payment";
@@ -30,7 +35,7 @@ function App() {
     const { user } = useContext(AuthContext);
 
     if (!user) {
-      return <Navigate to="/login" />;
+      return <Navigate to="/" />;
     }
 
     return children;
@@ -75,7 +80,10 @@ function App() {
                     <Route index element={<SchoolTablePage />} />
                   </Route>
                   <Route path="classes">
-                    <Route index element = {<List columns={postDetailColumns} />} />
+                    <Route
+                      index
+                      element={<List columns={postDetailColumns} />}
+                    />
                     <Route path="search/:Id" element={<SingleHouse />} />
                     <Route path="new" element={<NewClass />} />
                   </Route>
