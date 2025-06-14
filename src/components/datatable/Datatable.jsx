@@ -1,5 +1,3 @@
-// src/components/datatable/Datatable.jsx
-
 import React, { useContext, useEffect, useState } from "react";
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
@@ -25,8 +23,9 @@ const Datatable = ({ columns, searchQueryProp }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupData, setPopupData] = useState(null);
 
-  const { data, loading, error } = useFetch(`/api/${path}`);
+  const { data, loading, error } = useFetch(`/${path}`);
 
+  // Format and validate fetched data
   useEffect(() => {
     if (!data || !Array.isArray(data)) {
       console.error(`Invalid data for path "${path}":`, data);
@@ -41,6 +40,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
     setList(formatted);
   }, [data, path]);
 
+  // Filter list based on search input
   useEffect(() => {
     if (searchQueryProp && Array.isArray(data)) {
       const filtered = data.filter((item) =>
@@ -54,6 +54,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
     }
   }, [searchQueryProp, data]);
 
+  // Fetch assigned data (e.g., teacher's subjects)
   const handleAssignedTo = async (teacherName) => {
     try {
       if (!teacherName) {
@@ -62,7 +63,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
         return;
       }
 
-      const response = await apiRequest.get(`/api/teachers/${teacherName}/subjects`);
+      const response = await apiRequest.get(`/teachers/${teacherName}/subjects`);
       const responseData = Array.isArray(response.data) ? response.data : [response.data];
       setPopupData(responseData);
       setShowPopup(true);
@@ -72,6 +73,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
     }
   };
 
+  // Custom column for AssignedTo button
   const assignedToColumn = {
     field: "assignedTo",
     headerName: "Assigned To",
@@ -88,6 +90,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
     ),
   };
 
+  // Custom column for Actions (View/Delete)
   const actionColumn = {
     field: "action",
     headerName: "Action",
@@ -105,7 +108,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
           onClick={async () => {
             try {
               const token = Cookies.get("token");
-              await apiRequest.delete(`/api/${path}/${params.row.id}`, {
+              await apiRequest.delete(`/${path}/${params.row.id}`, {
                 headers: { Authorization: `Bearer ${token}` },
               });
               setList((prev) => prev.filter((item) => item.id !== params.row.id));
@@ -163,7 +166,11 @@ const Datatable = ({ columns, searchQueryProp }) => {
               <DataGrid
                 className="datagrid"
                 rows={list}
-                columns={[...columns.slice(0, 5), assignedToColumn, actionColumn]}
+                columns={[
+                  ...columns.slice(0, 5),
+                  assignedToColumn,
+                  actionColumn,
+                ]}
                 pageSize={9}
                 rowsPerPageOptions={[9]}
                 checkboxSelection
