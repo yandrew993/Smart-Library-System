@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from "react";
 import "./singleHouse.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import Map from "../../components/map/Map";
 import useFetch from "../../hooks/useFetch";
 import apiRequest from "../../lib/apiRequest";
 import Cookies from "js-cookie";
@@ -282,7 +281,6 @@ const SingleHouse = () => {
                     </>
                   )}
                 </div>
-                <Map items={[house]} />
               </div>
             </div>
           </div>
