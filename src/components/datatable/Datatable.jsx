@@ -63,7 +63,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
         return;
       }
 
-      const response = await apiRequest.get(`/teachers/${teacherName}/subjects`);
+      const response = await apiRequest.get(`/api/teachers/${teacherName}/subjects`);
       const responseData = Array.isArray(response.data) ? response.data : [response.data];
       setPopupData(responseData);
       setShowPopup(true);
